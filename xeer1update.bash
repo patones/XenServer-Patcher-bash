@@ -2,7 +2,7 @@
 #Automatically Update script for Xen Servers. Supports only 6.2 at the moment.
 #Start by downloading the xml file
 #bash xeer1
-echo "Downloading updates.xml
+echo "Downloading updates.xml"
 curl -# -L -R -o updates.xml http://updates.xensource.com/XenServer/updates.xml
 
 #Grep the patches for version number XS62E, parse the data, and form the table
