@@ -1,0 +1,194 @@
+Sample output on a brand new 6.2 installation
+
+[root@xenserver-test XenServer-Patcher-bash-master]# bash xeer1update.bash
+Downloading updates.xml
+######################################################################## 100.0%
+XS62E001 Patch was not found.
+Retrieving URL for download  http://support.citrix.com/servlet/KbServlet/download/34977-102-704231/XS62E001.zip
+URL Fetched Starting Download
+Downloading XS62E001.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E001.zip
+
+Uploading to Xen Server
+dedcc0dd-d8f3-4f76-90ca-92697c7a44f0
+Applying Patch
+Verifying Installation
+XS62E001 has been installed successfully
+Removing installation files
+XS62E002 Patch was not found.
+Retrieving URL for download  http://support.citrix.com/servlet/KbServlet/download/35140-102-704535/XS62E002.zip
+URL Fetched Starting Download
+Downloading XS62E002.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E002.zip
+
+Uploading to Xen Server
+59128f15-92cd-4dd9-8fbe-a0115d1b07a2
+Applying Patch
+Verifying Installation
+XS62E002 has been installed successfully
+Removing installation files
+XS62E004 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8165/XS62E004.zip
+URL Fetched Starting Download
+Downloading XS62E004.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E004.zip
+
+Uploading to Xen Server
+5579f1f0-ff83-11e2-b778-0800200c9a66
+Applying Patch
+Verifying Installation
+XS62E004 has been installed successfully
+Removing installation files
+XS62E005 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8197/XS62E005.zip
+URL Fetched Starting Download
+Downloading XS62E005.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E005.zip
+
+Uploading to Xen Server
+aeff92a9-2c60-43eb-b34e-14e4132b411c
+Applying Patch
+Verifying Installation
+XS62E005 has been installed successfully
+Removing installation files
+XS62E009 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8452/XS62E009.zip
+URL Fetched Starting Download
+Downloading XS62E009.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E009.zip
+
+Uploading to Xen Server
+d9c753b9-a15b-4a31-897b-97fdae609031
+Applying Patch
+Verifying Installation
+XS62E009 has been installed successfully
+Removing installation files
+XS62E010 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8458/XS62E010.zip
+URL Fetched Starting Download
+Downloading XS62E010.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E010.zip
+
+Uploading to Xen Server
+83bca9f6-4ae5-45f9-9426-440216f73797
+Applying Patch
+Verifying Installation
+XS62E010 has been installed successfully
+Removing installation files
+XS62E011 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8693/XS62E011.zip
+URL Fetched Starting Download
+Downloading XS62E011.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E011.zip
+
+Uploading to Xen Server
+ff202d2d-2812-4c6b-b500-2f4701de7bc4
+Applying Patch
+Verifying Installation
+XS62E011 has been installed successfully
+Removing installation files
+XS62E012 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8694/XS62E012.zip
+URL Fetched Starting Download
+Downloading XS62E012.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E012.zip
+
+Uploading to Xen Server
+a4251789-ce6c-4726-942c-3cddbadcaca6
+Applying Patch
+Verifying Installation
+XS62E012 has been installed successfully
+Removing installation files
+XS62ESP1 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8707/XS62ESP1.zip
+URL Fetched Starting Download
+Downloading XS62ESP1.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62ESP1.zip
+
+Uploading to Xen Server
+0850b186-4d47-11e3-a720-001b2151a503
+Applying Patch
+Verifying Installation
+XS62ESP1 has been installed successfully
+Removing installation files
+XS62E014 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8736/XS62E014.zip
+URL Fetched Starting Download
+Downloading XS62E014.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62E014.zip
+
+Uploading to Xen Server
+78251ea4-e4e7-4d72-85bd-b22bc137e20b
+Applying Patch
+The uploaded patch file is invalid.  See attached log for more details.
+log: error parsing patch precheck xml: expected one of these character sequence: "required", found "error" line 4
+Verifying Installation
+XS62E014 has been installed successfully
+Removing installation files
+XS62ESP1002 Patch was not found.
+Retrieving URL for download  http://downloadns.citrix.com.edgesuite.net/8737/XS62ESP1002.zip
+URL Fetched Starting Download
+Downloading XS62ESP1002.zip
+######################################################################## 100.0%
+Download Completed
+
+Unziping  XS62ESP1002.zip
+
+Uploading to Xen Server
+297f2f77-5603-4aaf-9e56-db49512d4592
+Applying Patch
+Verifying Installation
+XS62ESP1002 has been installed successfully
+Removing installation files
+[root@xenserver-test XenServer-Patcher-bash-master]#
+
+manually checking
+
+[root@xenserver-test XenServer-Patcher-bash-master]# xe patch-list | grep name-label
+              name-label ( RO): XS62ESP1
+              name-label ( RO): XS62E002
+              name-label ( RO): XS62E011
+              name-label ( RO): XS62E004
+              name-label ( RO): XS62E005
+              name-label ( RO): XS62E012
+              name-label ( RO): XS62E001
+              name-label ( RO): XS62E009
+              name-label ( RO): XS62E008
+              name-label ( RO): XS62E013
+              name-label ( RO): XS62E014
+              name-label ( RO): XS62E010
+              name-label ( RO): XS62ESP1002
+              name-label ( RO): XS62E007
+
+
+
