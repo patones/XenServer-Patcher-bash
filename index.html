@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Xenserver-patcher-bash by patones</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/patones/XenServer-Patcher-bash">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/patones/XenServer-Patcher-bash/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/patones/XenServer-Patcher-bash/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Xenserver-patcher-bash</h1>
+          <p>Simple bash script for Xen Server 6.2 that will download the patches xml, sort by time, check if the patch was installed already, downloades and install new ones.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/patones">patones</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h3>
+<a name="welcome-to-xeer1update" class="anchor" href="#welcome-to-xeer1update"><span class="octicon octicon-link"></span></a>Welcome to xeer1update.</h3>
+
+<p>Since the release of 6.2 I have been struggling to keep my server updated. The first time I had to manually apply 4 patches and the seconds time I had about 6. I decided to make my own little upgrade script.
+Below is xeer1update</p>
+
+<div class="highlight highlight-bash"><pre><span class="c">#!/bin/bash</span>
+<span class="c">#Automatically Update script for Xen Servers. Supports only 6.2 at the moment.</span>
+<span class="c">#Start by downloading the xml file</span>
+<span class="c">#bash xeer1</span>
+<span class="nb">echo</span> <span class="s2">"Downloading updates.xml"</span>
+curl -# -L -R -o updates.xml http://updates.xensource.com/XenServer/updates.xml
+
+<span class="c">#Grep the patches for version number XS62E, parse the data, and form the table</span>
+<span class="c">#Columns are 1-patch name 2 - url 3- timestamp and 4- uuid</span>
+<span class="c">#Each column is one variable and sorted by date and then by name</span>
+
+grep <span class="s1">'name-label="XS62E'</span> updates.xml <span class="p">|</span> cut -d <span class="s2">"\""</span> -f 6,8,12,16 --output-delimiter<span class="o">=</span><span class="s2">" "</span><span class="p">|</span>sort -k3,3 -k1<span class="p">|</span><span class="k">while </span><span class="nb">read </span>line1 line2 line3 line4
+        <span class="k">do</span>
+        <span class="c">#Save some typing</span>
+        <span class="nb">export </span><span class="nv">ShortUrl</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$line2</span><span class="sb">`</span>
+                <span class="c"># Check to see if the patch has been installed already</span>
+                <span class="k">if</span> <span class="o">[[</span> -n <span class="k">$(</span>xe patch-list name-label<span class="o">=</span><span class="nv">$line1</span> 2&gt; /dev/null<span class="k">)</span> <span class="o">]]</span>
+                <span class="k">then</span>
+<span class="k">                        </span><span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"has aleady been installed"</span>
+                <span class="k">else</span>
+                        <span class="c">#Patch download portion</span>
+                        <span class="nb">echo</span> -e <span class="nv">$line1</span> <span class="s2">"Patch was not found.\nRetrieving URL for download "</span> <span class="nv">$line2</span> <span class="s2">" \nURL Fetched Starting Download"</span>
+                                <span class="c">#check to see if the file already exists</span>
+                                <span class="k">if</span> <span class="o">[</span> -f <span class="nv">$ShortUrl</span> <span class="o">]</span>
+                                <span class="k">then</span>
+                                        <span class="c">#skips the file</span>
+                                        <span class="nb">echo</span> <span class="nv">$ShortUrl</span> <span class="s2">" already exists skipping download\n"</span>
+                                <span class="k">else</span>
+                                        <span class="c">#Downloads the file and unzip it</span>
+                                        <span class="nb">echo</span> <span class="s2">"Downloading $ShortUrl"</span>
+                                        curl -# -o <span class="nv">$ShortUrl</span> -L -R <span class="nv">$line2</span>
+                                        <span class="nb">echo</span> -e <span class="s2">"Download Completed\n"</span>
+
+                                <span class="k">fi</span>
+                        <span class="c">#Unzip</span>
+                        <span class="nb">echo</span> -e <span class="s2">"Unziping "</span> <span class="nv">$ShortUrl</span> <span class="s2">"\n"</span>
+                        unzip -o -q <span class="nv">$ShortUrl</span>
+                        <span class="c">#upload to Xen Server</span>
+                        <span class="nb">echo</span> <span class="s2">"Uploading to Xen Server"</span>
+                        xe patch-upload file-name<span class="o">=</span><span class="nv">$line1</span>.xsupdate
+                        <span class="nb">echo</span> <span class="s2">"Applying Patch"</span>
+                        xe patch-pool-apply <span class="nv">uuid</span><span class="o">=</span><span class="nv">$line4</span>
+                        <span class="nb">echo</span> <span class="s2">"Verifying Installation"</span>
+                                <span class="k">if</span> <span class="o">[[</span> -n <span class="k">$(</span>xe patch-list name-label<span class="o">=</span><span class="nv">$line1</span> 2&gt; /dev/null<span class="k">)</span> <span class="o">]]</span>
+                                        <span class="k">then</span>
+<span class="c">#Removing src xsupdate and cleaning with patch clean</span>
+                                                <span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"has been installed successfully"</span>
+                                                <span class="nb">echo</span> <span class="s2">"Removing installation files"</span>
+                                                rm -f <span class="nv">$line1</span>-src-pkgs.tar.bz2
+                                                rm -f <span class="nv">$line1</span>.xsupdate
+xe patch-clean <span class="nv">uuid</span><span class="o">=</span><span class="nv">$line4</span>
+                                        <span class="k">else</span>
+<span class="k">                                                </span><span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"Failed to Install please check it manually. Please fix the issue and run this program again"</span>
+                                                <span class="c">#Remove patch for you to fix the issue and try again</span>
+                                                rm -rf /opt/xensource/patch-backup/<span class="nv">$line3</span>
+                                                <span class="nb">exit </span>0
+                                <span class="k">fi</span>
+<span class="k">                fi</span>
+<span class="k">        done</span>
+</pre></div>
+
+<p>Feel free to use it in any way you want.</p>
+
+<p>I did some testing on a couple of 6.2 installations and as long as you ave enough disk space you should not see any errors.</p>
+
+<p>Have fun.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
