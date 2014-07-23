@@ -54,15 +54,15 @@ curl -# -L -R -o updates.xml http://updates.xensource.com/XenServer/updates.xml
 <span class="c">#Grep the patches for version number XS62E, parse the data, and form the table</span>
 <span class="c">#Columns are 1-patch name 2 - url 3- timestamp and 4- uuid</span>
 <span class="c">#Each column is one variable and sorted by date and then by name</span>
-
-grep <span class="s1">'name-label="XS62E'</span> updates.xml <span class="p">|</span> cut -d <span class="s2">"\""</span> -f 6,8,12,16 --output-delimiter<span class="o">=</span><span class="s2">" "</span><span class="p">|</span>sort -k3,3 -k1<span class="p">|</span><span class="k">while </span><span class="nb">read </span>line1 line2 line3 line4
+<span class="c">#the below stopped working. I was notified on July 19th 2014</span>
+grep <span class="s1">'name-label="XS62E'</span> updates.xml <span class="p">|</span> cut -d <span class="s2">"\""</span> -f 2,4,8,16 --output-delimiter<span class="o">=</span><span class="s2">" "</span><span class="p">|</span>sort -k3,3 -k4<span class="p">|</span><span class="k">while</span> <span class="nb">read </span>line4 line2 line3 line1
         <span class="k">do</span>
         <span class="c">#Save some typing</span>
         <span class="nb">export </span><span class="nv">ShortUrl</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$line2</span><span class="sb">`</span>
                 <span class="c"># Check to see if the patch has been installed already</span>
                 <span class="k">if</span> <span class="o">[[</span> -n <span class="k">$(</span>xe patch-list name-label<span class="o">=</span><span class="nv">$line1</span> 2&gt; /dev/null<span class="k">)</span> <span class="o">]]</span>
                 <span class="k">then</span>
-<span class="k">                        </span><span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"has aleady been installed"</span>
+                        <span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"has aleady been installed"</span>
                 <span class="k">else</span>
                         <span class="c">#Patch download portion</span>
                         <span class="nb">echo</span> -e <span class="nv">$line1</span> <span class="s2">"Patch was not found.\nRetrieving URL for download "</span> <span class="nv">$line2</span> <span class="s2">" \nURL Fetched Starting Download"</span>
@@ -96,13 +96,13 @@ grep <span class="s1">'name-label="XS62E'</span> updates.xml <span class="p">|</
                                                 rm -f <span class="nv">$line1</span>.xsupdate
 xe patch-clean <span class="nv">uuid</span><span class="o">=</span><span class="nv">$line4</span>
                                         <span class="k">else</span>
-<span class="k">                                                </span><span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"Failed to Install please check it manually. Please fix the issue and run this program again"</span>
+                                                <span class="nb">echo</span> <span class="nv">$line1</span> <span class="s2">"Failed to Install please check it manually. Please fix the issue and run this program again"</span>
                                                 <span class="c">#Remove patch for you to fix the issue and try again</span>
                                                 rm -rf /opt/xensource/patch-backup/<span class="nv">$line3</span>
                                                 <span class="nb">exit </span>0
                                 <span class="k">fi</span>
-<span class="k">                fi</span>
-<span class="k">        done</span>
+                <span class="k">fi</span>
+        <span class="k">done</span>
 </pre></div>
 
 <p>Feel free to use it in any way you want.</p>
